@@ -1,0 +1,133 @@
+---
+title: "Harvard week 2"
+output: html_document
+date: "2024-07-03"
+---
+
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
+filename <- basename(url)
+download(url, destfile=filename)
+x <- unlist( read.csv(filename) )
+mean(x)
+set.seed(5)
+abs(mean(sample(x, 5)) - mean(x))
+```
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
+filename <- basename(url)
+download(url, destfile=filename)
+x <- unlist( read.csv(filename) )
+set.seed(1)
+
+n <- 10000
+averages <- vector("numeric", n)
+for(i in 1:n){
+  sample <- sample(x ,5)
+  averages[i] <- mean(sample)
+}
+#hist(averages)
+mean(abs(averages - mean(x)) > 1)
+```
+
+```{r}
+library(gapminder)
+library(dplyr)
+data(gapminder)
+head(gapminder)
+data <- filter(gapminder, year == "1952")
+a <- count(data)
+b <- filter(data, lifeExp <= "40") %>% count
+b/a
+x <- unlist(data$lifeExp)
+plot(ecdf(x))
+
+```
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleControlsPopulation.csv"
+filename <- basename(url)
+download(url, destfile=filename)
+x <- unlist( read.csv(filename) )
+
+# make averages5
+set.seed(1)
+n <- 1000
+averages5 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(x,5)
+  averages5[i] <- mean(X)
+}
+hist(averages5)
+# make averages50
+set.seed(1)
+n <- 1000
+averages50 <- vector("numeric",n)
+for(i in 1:n){
+  X <- sample(x,50)
+  averages50[i] <- mean(X)
+}
+hist(averages50)
+```
+```{r}
+mean(averages50 >= 23 & averages50 <= 25)
+mu <- 23.9
+sigma <- 0.43
+pnorm(25, mu, sigma) - pnorm(23, mu, sigma)
+
+```
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
+filename <- basename(url)
+download(url, destfile=filename)
+dat <- read.csv(filename) 
+dat <- na.omit( dat )
+x <- filter(dat, Diet == "chow", Sex == "M") %>% select(Bodyweight) %>% unlist 
+mean(x)
+library(rafalib)
+popsd(x)
+
+set.seed(1)
+X <- sample(x,25)
+mean(X)
+
+K <- dat %>% filter(Sex == "M" & Diet == "hf") %>%select(Bodyweight) %>% unlist 
+mean(K)
+popsd(K)
+y <-K
+set.seed(1)
+Y <- sample(K, 25)
+mean_Y <- mean(Y)
+mean_X <- 30.5196
+abs(mean(y)- mean(x) - (mean_Y - mean_X))
+```
+
+
+
+```{r}
+s <- 2
+y <-dat %>% filter(Sex == "F" & Diet == "hf") %>%select(Bodyweight) %>% unlist 
+set.seed(s)
+Y <- sample(y, 25)
+x <- filter(dat, Diet == "chow", Sex == "F") %>% select(Bodyweight) %>% unlist 
+set.seed(s)
+X <- sample(x, 25)
+abs(mean(y) - mean(x) - mean(Y) + mean(X))
+
+```
+
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/mice_pheno.csv"
+filename <- basename(url)
+download(url, destfile=filename)
+dat <- na.omit( read.csv(filename) )
+```

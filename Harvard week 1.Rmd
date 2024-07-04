@@ -1,0 +1,98 @@
+---
+title: "Harv1"
+output: html_document
+date: "2024-07-02"
+---
+
+```{r setup, include=FALSE}
+```
+
+
+
+```{r}
+ex1 <- c(2.23, 3.45, 1.87, 2.11, 7.33, 18.34, 19.23)
+mean(ex1)
+```
+
+```{r}
+sum <- 0
+i <- 0
+while(i < 26){
+sum <- sum + i*i
+i <- i + 1
+}
+print(sum)
+```
+
+```{r}
+class(cars)
+nrow(cars)
+#head(cars)
+mean(cars[,2])
+which(cars[,2] == 85)
+```
+
+```{r}
+library(downloader) 
+url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
+filename <- "femaleMiceWeights.csv" 
+download(url, destfile=filename)
+data <- read.csv(filename)
+#head(data)
+print(data[12,2])
+print(data$Bodyweight[11])
+length(data[,1])
+mean(data$Bodyweight[which(data$Diet == "hf")])
+set.seed(1)
+random_row <- sample(13:24, 1)
+data$Bodyweight[random_row]
+
+```
+```{r}
+library(dplyr)
+library(downloader)
+url="https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/msleep_ggplot2.csv"
+filename <- basename(url)
+download(url,filename)
+data <- read.csv(filename)
+class(data)
+#filter(data, order == "Primates") %>% count
+filter(data, order == "Primates") %>% class
+filter(data, order == "Primates") %>% select(sleep_total) %>% class
+filter(data, order == "Primates") %>% select(sleep_total) %>% unlist %>% mean
+filter(data, order == "Primates") %>% summarise(mean = mean(sleep_total))
+```
+
+```{r}
+load("skew.RData")
+dim(dat)
+par(mfrow = c(3,3))
+for(i in 1:9){
+  qqnorm(dat[,i], main = paste("QQ-Plot of Column", i))
+  qqline(dat[,i])
+}
+
+for(i in 1:9){
+  hist(dat[,i])
+}
+
+```
+
+```{r}
+head(InsectSprays)
+boxplot(split(InsectSprays$count, InsectSprays$spray))
+boxplot(InsectSprays$count ~ InsectSprays$spray)
+
+```
+```{r}
+library(dplyr)
+data(nym.2002, package="UsingR")
+head(nym.2002)
+boxplot(nym.2002$time ~ nym.2002$gender)
+qqnorm(nym.2002$time)
+qqline(nym.2002$time)
+p <- filter(nym.2002, gender == "Male") #%>%
+hist(p$time)
+p <- filter(nym.2002, gender == "Female") #%>%
+hist(p$time)
+```
